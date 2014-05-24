@@ -1,16 +1,27 @@
 /**
  * Created by anstarovoyt on 24/05/14.
  */
+
 console.log("evaluating example.js");
 
-function Game(){
+function Game() {
 }
 
-Game.prototype.field = null;
+Game.prototype.gameField = null;
 
-Game.prototype.isFieldAlive = function() {
-    return this.field != null;
+Game.prototype.isFieldAlive = function () {
+    return this.gameField != null;
 };
 
-exports.gameState = new Game();
+//compatibility stuff
+function isNodeJS() {
+    return typeof module !== 'undefined' && module.exports;
+}
+
+if (isNodeJS()) {
+    exports.gameState = new Game();
+}
+
+
+
 
