@@ -26,7 +26,14 @@ function isNodeJS() {
         factory = cellFactory;
     }
 
-    var cell1 = factory.createObject(2, 2);
-    var cell2 = factory.createObject(2, 1);
-    console.log("cells are equal: " + cell1.equalsToCell(cell2));
+    var cell1 = factory.createCell(2, 2);
+    var cell2 = factory.createCell(2, 2);
+    var cell3 = factory.createCell(2, 1);
+    console.log("c1 and c2 are equal: " + cell1.equalsToCell(cell2));
+
+    var arr = {};
+    arr[cell1.getKey()] = true;
+    console.log("arr with c1 " + arr[cell1.getKey()]);
+    console.log("arr with c2 " + arr[cell2.getKey()]);
+    console.log("arr with c3 " + arr[cell3.getKey()]);
 })();

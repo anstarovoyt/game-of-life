@@ -8,11 +8,16 @@ function Cell(x, y) {
 }
 
 Cell.prototype.equalsToCell = function (obj2) {
-    return JSON.stringify(this) === JSON.stringify(obj2);
+    return this.getKey() == obj2.getKey();
 };
 
+Cell.prototype.getKey = function () {
+    return JSON.stringify(this);
+};
+
+//global declaration
 var cellFactory = {
-    createObject: function (x, y) {
+    createCell: function (x, y) {
         return new Cell(x, y);
     }
 };
