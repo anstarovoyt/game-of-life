@@ -8,7 +8,7 @@ function Cell(x, y) {
 }
 
 Cell.prototype.equalsToCell = function (obj2) {
-    return this.getKey() == obj2.getKey();
+    return this.getKey() === obj2.getKey();
 };
 
 Cell.prototype.getKey = function () {

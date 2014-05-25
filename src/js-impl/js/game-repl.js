@@ -19,16 +19,17 @@ function isNodeJS() {
 
 
 (function testCell() {
-    var factory;
-    if (isNodeJS()) {
-        factory = require('./cell.js').cellFactory;
-    } else {
-        factory = cellFactory;
+    function getCellFactory() {
+        if (isNodeJS()) {
+            return  require('./cell.js').cellFactory;
+        }
+        return cellFactory;
     }
+    var localCellFactory = getCellFactory();
 
-    var cell1 = factory.createCell(2, 2);
-    var cell2 = factory.createCell(2, 2);
-    var cell3 = factory.createCell(2, 1);
+    var cell1 = localCellFactory.createCell(2, 2);
+    var cell2 = localCellFactory.createCell(2, 2);
+    var cell3 = localCellFactory.createCell(2, 1);
     console.log("c1 and c2 are equal: " + cell1.equalsToCell(cell2));
 
     var arr = {};
