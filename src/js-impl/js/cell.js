@@ -28,5 +28,5 @@ function isNodeJS() {
 }
 
 if (isNodeJS()) {
-    exports.cellFactory = cellFacgtory;
+    exports.cellFactory = cellFactory;
 }

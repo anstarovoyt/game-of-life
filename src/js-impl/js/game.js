@@ -71,7 +71,6 @@ Game.prototype.setAlives = function (arr) {
     }
 };
 
-
 //compatibility stuff
 function isNodeJS() {
     return typeof module !== 'undefined' && module.exports;

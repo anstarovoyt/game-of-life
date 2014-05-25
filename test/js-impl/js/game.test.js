@@ -43,6 +43,12 @@ describe('Game field tests', function () {
         assert.ok(game.isCellAlive(1, 0));
     });
 
+    it('Self is not neighborhood', function () {
+        var game = gameFactory.createGame();
+        game.setAlive(0, 0);
+        assert.equal(game.getNeighborhoodCount(0, 0), 0);
+    });
+
     it('Count neighborhood line', function () {
         var game = gameFactory.createGame();
         game.setAlive(0, 0);
