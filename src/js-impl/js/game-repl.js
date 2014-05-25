@@ -5,24 +5,12 @@ function isNodeJS() {
     return typeof module !== 'undefined' && module.exports;
 }
 
-(function testGame() {
-    var gameState;
-
-    if (isNodeJS()) {
-        gameState = require('./game.js').gameState;
-    } else {
-        gameState = new Game();
-    }
-    gameState.gameField = "";
-    console.log("field is alive? " + gameState.isFieldAlive());
-})();
-
-
 (function testCell() {
     function getCellFactory() {
         if (isNodeJS()) {
             return  require('./cell.js').cellFactory;
         }
+        //noinspection JSUnresolvedVariable
         return cellFactory;
     }
     var localCellFactory = getCellFactory();
