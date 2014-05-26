@@ -34,7 +34,7 @@ Game.prototype.isCellDead = function (x, y) {
 
 Game.prototype.isCellAliveForCell = function (cell) {
     return this.gameField[cell.getKey()] != null;
-}
+};
 
 Game.prototype.setAlive = function (x, y) {
     this.setCellState(x, y, true);
