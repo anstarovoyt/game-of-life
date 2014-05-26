@@ -25,8 +25,16 @@ function Game() {
     this.gameField = {};
 }
 Game.prototype.isCellAlive = function (x, y) {
-    return this.gameField[this.getCell(x, y).getKey()] != null;
+    return this.isCellAliveForCell(this.getCell(x, y));
 };
+
+Game.prototype.isCellDead = function (x, y) {
+    return !this.isCellAliveForCell(this.getCell(x, y));
+};
+
+Game.prototype.isCellAliveForCell = function (cell) {
+    return this.gameField[cell.getKey()] != null;
+}
 
 Game.prototype.setAlive = function (x, y) {
     this.setCellState(x, y, true);
@@ -70,6 +78,53 @@ Game.prototype.setAlives = function (arr) {
         this.setAlive(arr[i], arr[i + 1]);
     }
 };
+
+Game.prototype.addNeighborhoods = function (cell, result) {
+    for (var i = -1; i < 2; i++) {
+        for (var j = -1; j < 2; j++) {
+            var currentCell = this.getCell(cell.x + i, cell.y + j);
+            result[currentCell.getKey()] = currentCell;
+        }
+    }
+};
+
+Game.prototype.collectCellsForCheck = function () {
+    var cellsForCheck = {};
+    for (var cell in this.gameField) {
+        if (!this.gameField.hasOwnProperty(cell)) continue;
+        this.addNeighborhoods(this.gameField[cell], cellsForCheck);
+    }
+
+    return cellsForCheck;
+};
+
+
+Game.prototype.step = function () {
+    var newState = {};
+    var cellsForCheck = this.collectCellsForCheck();
+
+    for (var cellKey in cellsForCheck) {
+        if (!cellsForCheck.hasOwnProperty(cellKey)) continue;
+        var cell = cellsForCheck[cellKey];
+
+        if (this.canLive(this.isCellAliveForCell(cell), this.getNeighborhoodCountForCell(cell))) {
+            newState[cell.getKey()] = cell;
+        }
+    }
+
+    this.gameField = newState;
+};
+
+Game.prototype.canLive = function (isCurrentAlive, countNeighborhoods) {
+    var state;
+    if (isCurrentAlive) {
+        state = countNeighborhoods === 2 || countNeighborhoods === 3;
+    } else {
+        state = countNeighborhoods === 3;
+    }
+    return state;
+};
+
 
 //compatibility stuff
 function isNodeJS() {
