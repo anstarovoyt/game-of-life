@@ -22,7 +22,15 @@ var localCellFactory = getCellFactory();
 
 function Game() {
 
-    this.gameField = {};
+    var gameField = {};
+
+    this.getField = function() {
+        return gameField;
+    };
+
+    this.setField = function(newField) {
+      gameField = newField;
+    }
 }
 Game.prototype.isCellAlive = function (x, y) {
     return this.isCellAliveForCell(this.getCell(x, y));
@@ -33,7 +41,7 @@ Game.prototype.isCellDead = function (x, y) {
 };
 
 Game.prototype.isCellAliveForCell = function (cell) {
-    return this.gameField[cell.getKey()] != null;
+    return this.getField()[cell.getKey()] != null;
 };
 
 Game.prototype.setAlive = function (x, y) {
@@ -47,9 +55,9 @@ Game.prototype.setDead = function (x, y) {
 Game.prototype.setCellState = function (x, y, isAlive) {
     var cell = this.getCell(x, y);
     if (isAlive) {
-        this.gameField[cell.getKey()] = cell;
+        this.getField()[cell.getKey()] = cell;
     } else {
-        delete this.gameField[cell.getKey()];
+        delete this.getField()[cell.getKey()];
     }
 };
 
@@ -90,9 +98,10 @@ Game.prototype.addNeighborhoods = function (cell, result) {
 
 Game.prototype.collectCellsForCheck = function () {
     var cellsForCheck = {};
-    for (var cell in this.gameField) {
-        if (!this.gameField.hasOwnProperty(cell)) continue;
-        this.addNeighborhoods(this.gameField[cell], cellsForCheck);
+    var field = this.getField();
+    for (var cell in field) {
+        if (!field.hasOwnProperty(cell)) continue;
+        this.addNeighborhoods(field[cell], cellsForCheck);
     }
 
     return cellsForCheck;
@@ -112,7 +121,7 @@ Game.prototype.step = function () {
         }
     }
 
-    this.gameField = newState;
+    this.setField(newState);
 };
 
 Game.prototype.canLive = function (isCurrentAlive, countNeighborhoods) {
