@@ -23,13 +23,26 @@ var localCellFactory = getCellFactory();
 function Game() {
 
     var gameField = {};
+    var limit;
 
-    this.getField = function() {
+    this.getField = function () {
         return gameField;
     };
 
-    this.setField = function(newField) {
-      gameField = newField;
+    this.setField = function (newField) {
+        gameField = newField;
+    }
+
+    this.getLimit = function () {
+        return limit;
+    }
+
+    this.setLimit = function (newLimit) {
+        limit = newLimit;
+    }
+
+    this.hasLimit = function () {
+        return limit != null;
     }
 }
 Game.prototype.isCellAlive = function (x, y) {
@@ -77,6 +90,16 @@ Game.prototype.getNeighborhoodCountForCell = function (cell) {
     return counter;
 };
 
+Game.prototype.isNotOutOfBound = function (cell) {
+    if (!this.hasLimit()) return true;
+    var limit = this.getLimit();
+    var checkLimit = function (cord, limit) {
+        return cord >= 0 && cord <= limit;
+    };
+
+    return checkLimit(cell.x, limit) && checkLimit(cell.y, limit);
+};
+
 Game.prototype.getCell = function (x, y) {
     return localCellFactory.createCell(x, y)
 };
@@ -91,7 +114,9 @@ Game.prototype.addNeighborhoods = function (cell, result) {
     for (var i = -1; i < 2; i++) {
         for (var j = -1; j < 2; j++) {
             var currentCell = this.getCell(cell.x + i, cell.y + j);
-            result[currentCell.getKey()] = currentCell;
+            if (this.isNotOutOfBound(currentCell)) {
+                result[currentCell.getKey()] = currentCell;
+            }
         }
     }
 };

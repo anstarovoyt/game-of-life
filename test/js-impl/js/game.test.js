@@ -147,4 +147,20 @@ describe('Game field tests', function () {
         assert.ok(game.isCellDead(1, 0));
         assert.ok(game.isCellDead(-1, 0));
     });
+
+    it('Limit field test', function () {
+        var game = gameFactory.createGame();
+        game.setLimit(3);
+        game.setAlive(0, 0);
+        game.setAlive(0, 1);
+        game.setAlive(0, 2);
+        game.step();
+        assert.ok(game.isCellAlive(0, 1));
+        assert.ok(game.isCellDead(0, 2));
+        assert.ok(game.isCellDead(-1, 1));
+        game.step();
+        assert.ok(game.isCellDead(0, 0));
+        assert.ok(game.isCellDead(0, 1));
+        assert.ok(game.isCellDead(0, 2));
+    });
 });
